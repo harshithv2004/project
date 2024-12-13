@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Steganography</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        /* Body and HTML Settings */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: white;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Background video */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1; /* Ensure the video stays behind content */
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        /* Container Settings */
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            color: #FF6347;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Button Hover Effects */
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Input Field Animations */
+        input[type="file"], textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            margin-bottom: 15px;
+            transition: 0.3s ease;
+        }
+
+        input[type="file"]:hover, textarea:hover {
+            border-color: #FF6347;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="file"]:focus, textarea:focus {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: #FF6347;
+            box-shadow: 0 0 8px rgba(255, 99, 71, 0.6);
+        }
+
+        /* Styling for logout button */
+        .logout {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: rgb(219, 80, 80);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            background-color: rgb(252, 5, 5);
+            transform: translateY(-2px);
+        }
+
+        /* Header Animations */
+        h1 {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h2 {
+            animation: fadeInUp 1s 0.3s ease-out;
+        }
+
+        /* Decoded Message Style */
+        #decodedMessage {
+            font-weight: bold;
+            color: #eff5ef;
+            margin-top: 20px;
+            animation: slideUp 1s ease-out;
+        }
+
+        /* Custom Keyframe Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay muted loop>
+        <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+    
+    </video>
+
+    <!-- Content container -->
+    <div class="container">
+        <h1>Image Steganography</h1>
+        <a href="/logout" class="logout">Logout</a>
+        
+        <div class="form-section">
+            <h2>Encode Message</h2>
+            <form method="POST" action="/encode" enctype="multipart/form-data">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Encode</button>
+            </form>
+        </div>
+
+        <div class="form-section">
+            <h2>Decode Message</h2>
+            <form method="POST" action="/decode" enctype="multipart/form-data">
+                <label for="encodedImage">Upload Encoded Image:</label>
+                <input type="file" id="encodedImage" name="encodedImage" accept="image/*" required>
+
+                <button type="submit">Decode</button>
+            </form>
+            <div class="form-section">
+                <h2>Decoded Message</h2>
+                {% if decoded_message %}
+                <p style="color: rgb(240, 243, 240); font-weight: bold;">Decoded Message: {{ decoded_message }}</p>
+                {% endif %}
+            </div>
+
+            <p id="decodedMessage"></p>
+        </div>
+    </div>
+
+</body>
+</html>
