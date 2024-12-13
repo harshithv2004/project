@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        /* Body and HTML Settings */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Background Video */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* Login Form Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            border-radius: 15px;
+            width: 300px;
+            margin: 100px auto;
+            text-align: center;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Title */
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            letter-spacing: 2px;
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Input Fields and Button */
+        form input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid #231c3a;
+            font-size: 1.1em;
+            background: rgba(255, 255, 255, 0.2);
+            color: rgb(224, 240, 10);
+            outline: none;
+            opacity: 0.9;
+            transition: 0.3s ease-in-out;
+        }
+
+        /* Focus effect on inputs */
+        form input:focus {
+            background-color: rgba(10, 240, 240, 0.3);
+            border-color: #4CAF50;
+            transform: scale(1.05);
+        }
+
+        /* Submit Button */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-size: 1.1em;
+            transition: 0.4s;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #06e611;
+            transform: translateY(-3px);
+            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Error Message */
+        form p {
+            color: red;
+            margin-top: 10px;
+            font-size: 0.9em;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+            animation-delay: 1s;
+        }
+
+        /* Keyframes for Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay muted loop>
+        <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Login Form Container -->
+    <div class="container">
+        <h1>Login</h1>
+        <form method="POST" action="/">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        {% if error %}
+        <p>{{ error }}</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>
